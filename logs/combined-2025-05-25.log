@@ -1,0 +1,93 @@
+{"level":"info","message":"Server started on port 5000","timestamp":"2025-05-25 11:14:05"}
+{"level":"info","message":"Connect to MongoDb Successfully!","timestamp":"2025-05-25 11:14:07"}
+{"level":"info","message":"Model download progress: NaN%","timestamp":"2025-05-25 11:17:05"}
+{"level":"info","message":"Model download progress: NaN%","timestamp":"2025-05-25 11:17:05"}
+{"level":"info","message":"Model download progress: NaN%","timestamp":"2025-05-25 11:17:05"}
+{"level":"info","message":"Model download progress: NaN%","timestamp":"2025-05-25 11:17:05"}
+{"level":"info","message":"Model download progress: NaN%","timestamp":"2025-05-25 11:17:05"}
+{"level":"info","message":"Model download progress: NaN%","timestamp":"2025-05-25 11:17:05"}
+{"level":"info","message":"Model download progress: 100%","timestamp":"2025-05-25 11:17:05"}
+{"level":"info","message":"Model download progress: NaN%","timestamp":"2025-05-25 11:17:05"}
+{"level":"info","message":"Model download progress: 100%","timestamp":"2025-05-25 11:17:05"}
+{"level":"info","message":"Model download progress: NaN%","timestamp":"2025-05-25 11:17:05"}
+{"level":"info","message":"Model download progress: NaN%","timestamp":"2025-05-25 11:17:05"}
+{"level":"info","message":"Model download progress: NaN%","timestamp":"2025-05-25 11:17:05"}
+{"level":"info","message":"Model download progress: 100%","timestamp":"2025-05-25 11:17:05"}
+{"level":"info","message":"Model download progress: NaN%","timestamp":"2025-05-25 11:17:05"}
+{"level":"info","message":"Model download progress: 100%","timestamp":"2025-05-25 11:17:05"}
+{"level":"info","message":"Model download progress: NaN%","timestamp":"2025-05-25 11:17:05"}
+{"level":"info","message":"Model download progress: NaN%","timestamp":"2025-05-25 11:17:05"}
+{"level":"info","message":"Embedding model ready","timestamp":"2025-05-25 11:17:05"}
+{"level":"info","message":"Processing 2 chunks","timestamp":"2025-05-25 11:17:05"}
+{"level":"info","message":"Model download progress: NaN%","timestamp":"2025-05-25 11:18:40"}
+{"level":"info","message":"Model download progress: NaN%","timestamp":"2025-05-25 11:18:40"}
+{"level":"info","message":"Model download progress: NaN%","timestamp":"2025-05-25 11:18:40"}
+{"level":"info","message":"Model download progress: NaN%","timestamp":"2025-05-25 11:18:40"}
+{"level":"info","message":"Model download progress: NaN%","timestamp":"2025-05-25 11:18:40"}
+{"level":"info","message":"Model download progress: NaN%","timestamp":"2025-05-25 11:18:40"}
+{"level":"info","message":"Model download progress: 100%","timestamp":"2025-05-25 11:18:40"}
+{"level":"info","message":"Model download progress: NaN%","timestamp":"2025-05-25 11:18:40"}
+{"level":"info","message":"Model download progress: 100%","timestamp":"2025-05-25 11:18:40"}
+{"level":"info","message":"Model download progress: NaN%","timestamp":"2025-05-25 11:18:40"}
+{"level":"info","message":"Model download progress: NaN%","timestamp":"2025-05-25 11:18:40"}
+{"level":"info","message":"Model download progress: NaN%","timestamp":"2025-05-25 11:18:40"}
+{"level":"info","message":"Model download progress: 100%","timestamp":"2025-05-25 11:18:40"}
+{"level":"info","message":"Model download progress: NaN%","timestamp":"2025-05-25 11:18:40"}
+{"level":"info","message":"Model download progress: 100%","timestamp":"2025-05-25 11:18:40"}
+{"level":"info","message":"Model download progress: NaN%","timestamp":"2025-05-25 11:18:40"}
+{"level":"info","message":"Model download progress: NaN%","timestamp":"2025-05-25 11:18:40"}
+{"level":"info","message":"Embedding model ready","timestamp":"2025-05-25 11:18:40"}
+{"dims":384,"level":"info","message":"Query embedded successfully","sample":[-0.024167411029338837,-0.00030098375282250345,-0.0659642443060875],"timestamp":"2025-05-25 11:18:47"}
+{"level":"warn","message":"No relevant chunks found","query":"this is my test project list.","timestamp":"2025-05-25 11:19:15"}
+{"dims":384,"level":"info","message":"Query embedded successfully","sample":[-0.03259885311126709,-0.04569808766245842,0.0035713680554181337],"timestamp":"2025-05-25 11:31:39"}
+{"dims":384,"level":"info","message":"Query embedded successfully","sample":[-0.007759226486086845,-0.07913019508123398,0.026635633781552315],"timestamp":"2025-05-25 13:23:16"}
+{"level":"warn","message":"No relevant chunks found","query":"is there any projects?\n","timestamp":"2025-05-25 13:23:33"}
+{"dims":384,"level":"info","message":"Query embedded successfully","sample":[-0.07728933542966843,-0.04673153534531593,0.02979291044175625],"timestamp":"2025-05-25 13:26:49"}
+{"dims":384,"level":"info","message":"Query embedded successfully","sample":[-0.06751813739538193,-0.028147030621767044,0.024340985342860222],"timestamp":"2025-05-25 13:48:34"}
+{"level":"info","message":"Server started on port 5000","timestamp":"2025-05-25 17:39:16"}
+{"level":"info","message":"Connect to MongoDb Successfully!","timestamp":"2025-05-25 17:39:19"}
+{"level":"info","message":"Model download progress: NaN%","timestamp":"2025-05-25 17:41:48"}
+{"level":"info","message":"Model download progress: NaN%","timestamp":"2025-05-25 17:41:48"}
+{"level":"info","message":"Model download progress: NaN%","timestamp":"2025-05-25 17:41:48"}
+{"level":"info","message":"Model download progress: NaN%","timestamp":"2025-05-25 17:41:48"}
+{"level":"info","message":"Model download progress: NaN%","timestamp":"2025-05-25 17:41:48"}
+{"level":"info","message":"Model download progress: NaN%","timestamp":"2025-05-25 17:41:48"}
+{"level":"info","message":"Model download progress: 100%","timestamp":"2025-05-25 17:41:48"}
+{"level":"info","message":"Model download progress: NaN%","timestamp":"2025-05-25 17:41:48"}
+{"level":"info","message":"Model download progress: NaN%","timestamp":"2025-05-25 17:41:48"}
+{"level":"info","message":"Model download progress: NaN%","timestamp":"2025-05-25 17:41:48"}
+{"level":"info","message":"Model download progress: 100%","timestamp":"2025-05-25 17:41:48"}
+{"level":"info","message":"Model download progress: NaN%","timestamp":"2025-05-25 17:41:48"}
+{"level":"info","message":"Model download progress: 100%","timestamp":"2025-05-25 17:41:48"}
+{"level":"info","message":"Model download progress: NaN%","timestamp":"2025-05-25 17:41:48"}
+{"level":"info","message":"Model download progress: 100%","timestamp":"2025-05-25 17:41:48"}
+{"level":"info","message":"Model download progress: NaN%","timestamp":"2025-05-25 17:41:48"}
+{"level":"info","message":"Model download progress: NaN%","timestamp":"2025-05-25 17:41:48"}
+{"level":"info","message":"Embedding model ready","timestamp":"2025-05-25 17:41:48"}
+{"level":"info","message":"Processing 2 chunks","timestamp":"2025-05-25 17:41:48"}
+{"level":"info","message":"Model download progress: NaN%","timestamp":"2025-05-25 17:42:36"}
+{"level":"info","message":"Model download progress: NaN%","timestamp":"2025-05-25 17:42:36"}
+{"level":"info","message":"Model download progress: NaN%","timestamp":"2025-05-25 17:42:36"}
+{"level":"info","message":"Model download progress: NaN%","timestamp":"2025-05-25 17:42:36"}
+{"level":"info","message":"Model download progress: NaN%","timestamp":"2025-05-25 17:42:36"}
+{"level":"info","message":"Model download progress: NaN%","timestamp":"2025-05-25 17:42:36"}
+{"level":"info","message":"Model download progress: 100%","timestamp":"2025-05-25 17:42:36"}
+{"level":"info","message":"Model download progress: NaN%","timestamp":"2025-05-25 17:42:36"}
+{"level":"info","message":"Model download progress: 100%","timestamp":"2025-05-25 17:42:36"}
+{"level":"info","message":"Model download progress: NaN%","timestamp":"2025-05-25 17:42:36"}
+{"level":"info","message":"Model download progress: NaN%","timestamp":"2025-05-25 17:42:36"}
+{"level":"info","message":"Model download progress: NaN%","timestamp":"2025-05-25 17:42:36"}
+{"level":"info","message":"Model download progress: 100%","timestamp":"2025-05-25 17:42:36"}
+{"level":"info","message":"Model download progress: NaN%","timestamp":"2025-05-25 17:42:36"}
+{"level":"info","message":"Model download progress: 100%","timestamp":"2025-05-25 17:42:36"}
+{"level":"info","message":"Model download progress: NaN%","timestamp":"2025-05-25 17:42:36"}
+{"level":"info","message":"Model download progress: NaN%","timestamp":"2025-05-25 17:42:37"}
+{"level":"info","message":"Embedding model ready","timestamp":"2025-05-25 17:42:37"}
+{"dims":384,"level":"info","message":"Query embedded successfully","sample":[-0.08030088990926743,-0.005663343705236912,0.008976902812719345],"timestamp":"2025-05-25 17:42:37"}
+{"level":"warn","message":"No relevant chunks found","query":"let me know about my project list.","timestamp":"2025-05-25 17:42:37"}
+{"dims":384,"level":"info","message":"Query embedded successfully","sample":[-0.047347474843263626,-0.02611854299902916,0.03395179286599159],"timestamp":"2025-05-25 17:43:12"}
+{"dims":384,"level":"info","message":"Query embedded successfully","sample":[-0.02702634409070015,0.004123764578253031,-0.000304227665765211],"timestamp":"2025-05-25 17:43:45"}
+{"dims":384,"level":"info","message":"Query embedded successfully","sample":[-0.045609619468450546,0.10619370639324188,0.03657194599509239],"timestamp":"2025-05-25 18:26:53"}
+{"level":"warn","message":"No relevant chunks found","query":"Hi\n","timestamp":"2025-05-25 18:26:53"}
+{"level":"info","message":"Server started on port 5000","timestamp":"2025-05-25 22:46:58"}
+{"level":"info","message":"Connect to MongoDb Successfully!","timestamp":"2025-05-25 22:47:00"}
