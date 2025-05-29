@@ -59,6 +59,10 @@ app.use("/checkout", checkoutRoutes);
 app.use("/user", userRoutes);
 console.log("gpoind from server");
 app.use("/feedback", feedbackRoutes);
+app.get("/", (req, res) => {
+  res.send("🚀 Backend API is running!");
+});
+
 //middlewares -> auth middleware and error handler middleware
 app.use(errorHandler);
 
