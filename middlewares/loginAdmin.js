@@ -42,11 +42,10 @@ const loginAdmin = async (req, res) => {
       console.log('Token Value ', token);
       res
         .cookie('accessToken', token, {
-          httpOnly: false,
-          secure: false,
-          // secure: process.env.NODE_ENV === "production", other than https calls , it will drop cookie silently
-          // sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
-          maxAge: 2 * 60 * 60 * 1000,
+          httpOnly: true,          // Protects against XSS
+  secure: true,            // Ensures cookie is sent only over HTTPS
+  sameSite: 'none',        // Needed for cross-origin cookies
+  maxAge: 2 * 60 * 60 * 1000,
           // path: "/",
           // domain:
           //   process.env.NODE_ENV === "production"
@@ -58,7 +57,7 @@ const loginAdmin = async (req, res) => {
         .status(200)
         .json({
           success: true,
-          message: 'Login successful',
+          message: 'Login successful yyyyyyyyyyyyyyyyyyyyyyy its me',
           user: {
             id: client._id,
             email: client.email,

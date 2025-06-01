@@ -57,9 +57,9 @@ const registerAdmin = async (req, res) => {
       userId: newAdmin?._id,
       planName: plan,
       price: plan == 'Business Plan' ? 50 : 0,
-      link: `${process.env.FRONTEND_URL}/${companyname
+      link: `${process.env.FRONTEND_URL}/chat-assistant?company=${companyname
         .toLowerCase()
-        .replace(/\s+/g, '')}/chat-assistant`,
+        .replace(/\s+/g, '')}`,
       features:
         plan == 'Business Plan'
           ? [
