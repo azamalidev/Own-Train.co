@@ -11,6 +11,8 @@ const {
 } = require('../aiServices/GrokAPI');
 const findMatchedImages = require('../aiServices/findImages');
 const { spawn } = require('child_process');
+const Subscription = require('../models/subscription');
+
 const { enrichWithOpenAI, summarizationWithOpenAI } = require('./enrichText');
 
 // function runPython(inputText) {

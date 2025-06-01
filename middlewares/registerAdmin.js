@@ -235,6 +235,33 @@ const findAdmin = async (req, res) => {
         admin.companyname && normalize(admin.companyname) === inputCompany
     );
 
+    const subscription = await Subscription.find({ userId: user?._id });
+    console.log(subscription[0], 'subscriptionsubscription');
+
+    if (!subscription?.length) {
+      return res.status(403).json({ message: 'No subscription found' });
+    }
+
+    const plan = subscription[0];
+    const planName = plan.planName;
+    const updatedAt = new Date(plan.updatedAt);
+    const now = new Date();
+
+    // ✅ Check if one month has passed since updatedAt
+    const isOneMonthOver = (now - updatedAt) / (1000 * 60 * 60 * 24) >= 30;
+
+    if (planName === 'Business Plan') {
+      if (plan.useDataStore >= 50 || isOneMonthOver) {
+        return res.status(403).json({ message: 'Plan has been Expire' });
+      }
+    }
+
+    if (planName === 'Free Plan') {
+      if (plan.maxFile >= 5 || isOneMonthOver) {
+        return res.status(403).json({ message: 'Plan has been Expire' });
+      }
+    }
+
     if (!user) {
       return res.status(404).json({ message: 'Admin not found' });
     }
