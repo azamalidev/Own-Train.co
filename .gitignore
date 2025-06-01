@@ -1,0 +1,8 @@
+.env
+logs/
+uploads/
+node_modules/
+*.log
+*.log.gz
+*.save
+*.json

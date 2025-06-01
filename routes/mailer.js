@@ -2,26 +2,30 @@ require('dotenv').config();
 const nodemailer = require('nodemailer');
 
 const transporter = nodemailer.createTransport({
-    host: 'smtp.ethereal.email',
-    port: 587,
-    auth: {
-        user: 'pat.hudson82@ethereal.email',
-        pass: 'ej3BbSgqYQH4xHxnQy'
-    }
+  host: 'smtp.gmail.com',
+  port: 465,
+  secure: true, // true for port 465, false for port 587
+  auth: {
+    user: 'hwtechenterprisellc@gmail.com',
+    pass: 'hwkizgohhdssebjo', // App password from your image
+  },
 });
 
-const sendEmail = async (to, subject, text) => {
+const sendEmail = async (to, subject, htmlContent) => {
   try {
-    await transporter.sendMail({
-      from: 'pat.hudson82@ethereal.email',
+    const info = await transporter.sendMail({
+      from: '"HW Tech" <hwtechenterprisellc@gmail.com>', // Sender name + email
       to,
       subject,
-      text,
+      html: htmlContent,
     });
-    console.log('Email sent successfully');
+
+    console.log('✅ Gmail email sent:', info.messageId);
   } catch (error) {
-    console.error('Error sending email:', error);
+    console.error('❌ Error sending Gmail email:', error);
+    throw error;
   }
 };
 
 module.exports = sendEmail;
+

@@ -18,11 +18,11 @@ app.use(
   cors({
     origin: function (origin, callback) {
       const allowedOrigins = [
-        "http://localhost:5173",
-        "http://localhost:5000",
-        "https://your-production-domain.com",
-      ];
-      if (!origin || allowedOrigins.indexOf(origin) !== -1) {
+  "http://localhost:5173",
+  "http://localhost:5000",
+  "https://owntrain.co",
+  "https://www.owntrain.co"
+];      if (!origin || allowedOrigins.indexOf(origin) !== -1) {
         callback(null, true);
       } else {
         callback(new Error("Not allowed by CORS"));
@@ -59,6 +59,10 @@ app.use("/checkout", checkoutRoutes);
 app.use("/user", userRoutes);
 console.log("gpoind from server");
 app.use("/feedback", feedbackRoutes);
+app.get("/", (req, res) => {
+  res.send("🚀 Backend API is running!");
+});
+
 //middlewares -> auth middleware and error handler middleware
 app.use(errorHandler);
 
