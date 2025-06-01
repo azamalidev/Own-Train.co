@@ -1,20 +1,22 @@
 require('dotenv').config();
 const nodemailer = require('nodemailer');
 
-const transporter = nodemailer.createTransport({
-  host: 'smtp.gmail.com',
-  port: 465,
-  secure: true, // true for port 465, false for port 587
+
+
+let transporter = nodemailer.createTransport({
+  service: 'gmail',
   auth: {
-    user: 'hwtechenterprisellc@gmail.com',
-    pass: 'hwkizgohhdssebjo', // App password from your image
+    user: 'trainown52@gmail.com',
+    pass: 'aydrqqwxlxhfcrgr', // App password from your image
   },
 });
+
+
 
 const sendEmail = async (to, subject, htmlContent) => {
   try {
     const info = await transporter.sendMail({
-      from: '"HW Tech" <hwtechenterprisellc@gmail.com>', // Sender name + email
+      from: '"HW Tech" <trainown52@gmail.com>', // Sender name + email
       to,
       subject,
       html: htmlContent,

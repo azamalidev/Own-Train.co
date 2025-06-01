@@ -29,13 +29,25 @@ const registerAdmin = async (req, res) => {
       !region ||
       !telephone
     ) {
-      return res.status(400).json({ message: 'All fields are required' });
+      return res
+        .status(400)
+        .json({ code: 400, message: 'All fields are required' });
     }
 
     const existingAdmin = await Admin.findOne({ email });
     if (existingAdmin) {
-      return res.status(409).json({ message: 'Admin already exists' });
+      return res
+        .status(409)
+        .json({ code: 400, message: 'Admin already exists with email' });
     }
+    const existingComapny = await Admin.findOne({ companyname: companyname });
+
+    if (existingComapny) {
+      return res
+        .status(409)
+        .json({ code: 400, message: 'This company name is already in Use' });
+    }
+
     const otp = generateOTP();
     const newAdmin = new Admin({
       clientname,
@@ -137,11 +149,11 @@ const registerAdmin = async (req, res) => {
   } catch (error) {
     if (error.name === 'ValidationError') {
       const messages = Object.values(error.errors).map((val) => val.message);
-      return res.status(400).json({ message: messages.join(', ') });
+      return res.status(400).json({ code: 400, message: messages.join(', ') });
     }
 
     console.error('Error in registerAdmin:', error);
-    res.status(500).json({ message: 'Server error' });
+    res.status(500).json({ code: 400, message: error.message });
   }
 };
 const generateOTP = () => {
@@ -219,19 +231,21 @@ const findAdmin = async (req, res) => {
     const admins = await Admin.find(); // fetch all admins
 
     const user = admins.find(
-      (admin) => admin.companyname && normalize(admin.companyname) === inputCompany
+      (admin) =>
+        admin.companyname && normalize(admin.companyname) === inputCompany
     );
 
     if (!user) {
       return res.status(404).json({ message: 'Admin not found' });
     }
 
-    return res.status(200).json({ data: user, message: 'Admin found successfully' });
+    return res
+      .status(200)
+      .json({ data: user, message: 'Admin found successfully' });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: 'Server error' });
   }
 };
-
 
 module.exports = { registerAdmin, verifyOTP, findAdmin };

@@ -6,7 +6,8 @@ const path = require("path");
 const fs = require("fs");
 
 // Initialize AI services
-const API_KEY = "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";
+const API_KEY = process.env.GROK_API_KEY;
+;
 const MODEL_NAME = "meta-llama/llama-4-scout-17b-16e-instruct";
 
 async function processImage(imageId, userId) {

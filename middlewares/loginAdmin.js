@@ -42,10 +42,10 @@ const loginAdmin = async (req, res) => {
       console.log('Token Value ', token);
       res
         .cookie('accessToken', token, {
-          httpOnly: true,          // Protects against XSS
-  secure: true,            // Ensures cookie is sent only over HTTPS
-  sameSite: 'none',        // Needed for cross-origin cookies
-  maxAge: 2 * 60 * 60 * 1000,
+          httpOnly: true, // secure from JavaScript
+          secure: true, // cookie only sent over HTTPS
+          sameSite: 'None', // required when using cross-site cookies with secure
+          maxAge: 2 * 60 * 60 * 1000,
           // path: "/",
           // domain:
           //   process.env.NODE_ENV === "production"

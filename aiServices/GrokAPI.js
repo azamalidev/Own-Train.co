@@ -1,15 +1,34 @@
-const axios = require("axios");
+const axios = require('axios');
 
 // Groq API key yahan likh do
-const API_KEY =
-  process.env.GROK_API_KEY ||
-  "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";
-
-async function askGroqWithContext(question, context, prevHistory) {
+const API_KEY = process.env.GROK_API_KEY;
+async function askGroqWithContext(
+  question,
+  context,
+  prevHistory,
+  existingSummary,
+  lastSummarizedIndex
+) {
   const filteredHistory = prevHistory.map(({ text, sender }) => ({
     text,
     sender,
   }));
+
+  // 🧠 Update summary with new messages
+  let updatedSummary = existingSummary;
+  let newLastSummarizedIndex = lastSummarizedIndex;
+
+  try {
+    const summaryResult = await updateSummaryWithNewMessages(
+      existingSummary,
+      filteredHistory,
+      lastSummarizedIndex
+    );
+    updatedSummary = summaryResult.updatedSummary;
+    newLastSummarizedIndex = summaryResult.newLastSummarizedIndex;
+  } catch (error) {
+    console.error('Failed to update summary:', error.message);
+  }
 
   const systemMessage =
     context && context.trim().length > 0
@@ -27,7 +46,7 @@ async function askGroqWithContext(question, context, prevHistory) {
    - If something is **not covered at all**, say: "I don't have enough information in the context to answer that."
    - Avoid making assumptions or fabricating details not present in the context.
    - Make responses informative, human-like, and context-rich — as if explaining to someone eager to understand.
-   - Use the previous conversation history: ${filteredHistory} if the context is not so much clear or not avaiable, understand the previous history deeply, answer based on history, understand the sender and the user, messages from the history and then if the response is possible to make, then make it.
+   - Use the previous conversation history: ${updatedSummary} if the context is not so much clear or not avaiable, understand the previous history deeply, answer based on history, understand the sender and the user, messages from the history and then if the response is possible to make, then make it.
 4. FORMATTING:
    - Use short paragraphs or bullet points for clarity when needed.
    - Emphasize important terms or ideas using quotes or rephrasing for clarity.
@@ -45,47 +64,102 @@ ${context}`
 
 3. Do not guess or make up answers. Always ask for more details if you're unsure.`;
 
-  console.log("Question", question);
-  console.log("Prev history in the grok req is : ", filteredHistory);
-
   try {
-    console.log("Req to grok");
     const response = await axios.post(
       process.env.GROK_API_URL ||
-        "https://api.groq.com/openai/v1/chat/completions",
+        'https://api.groq.com/openai/v1/chat/completions',
       {
-        model: "meta-llama/llama-4-scout-17b-16e-instruct",
+        model: 'meta-llama/llama-4-scout-17b-16e-instruct',
         messages: [
-          {
-            role: "system",
-            content: systemMessage,
-          },
-          {
-            role: "user",
-            content: question,
-          },
+          { role: 'system', content: systemMessage },
+          { role: 'user', content: question },
         ],
-        temperature: 0.2, // kam random, zyada accurate
-        max_tokens: 1024, // jitna bada answer chahiye, adjust kar sakte ho
+        temperature: 0.2,
+        max_tokens: 1024,
       },
       {
         headers: {
           Authorization: `Bearer ${API_KEY}`,
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
         },
       }
     );
 
-    const answer = response.data.choices[0].message.content;
-
-    return answer;
+    return {
+      answer: response.data.choices[0].message.content.trim(),
+      updatedSummary,
+      newLastSummarizedIndex,
+    };
   } catch (error) {
-    console.error(error.response ? error.response.data : error.message);
-    throw new Error("API Request Failed");
+    console.error('Groq API Error:', error.response?.data || error.message);
+    throw new Error('API Request Failed');
   }
 }
 
-module.exports = { askGroqWithContext };
+async function updateSummaryWithNewMessages(
+  existingSummary,
+  allMessages,
+  lastIndex
+) {
+  const newMessages = allMessages.slice(lastIndex + 1);
+
+  if (newMessages.length === 0) {
+    return {
+      updatedSummary: existingSummary,
+      newLastSummarizedIndex: lastIndex,
+    };
+  }
+
+  const formattedNewMessages = newMessages
+    .map((msg) => `${msg.sender === 'user' ? 'User' : 'Bot'}: ${msg.text}`)
+    .join('\n');
+
+  const prompt = `Current Summary:\n${existingSummary}\n\nNew Messages:\n${formattedNewMessages}\n\nUpdate the summary accordingly.`;
+
+  const updatedSummary = await askGroqForSummary(prompt);
+
+  return {
+    updatedSummary,
+    newLastSummarizedIndex: allMessages.length - 1,
+  };
+}
+async function askGroqForSummary(prompt) {
+  try {
+    const response = await axios.post(
+      process.env.GROK_API_URL ||
+        'https://api.groq.com/openai/v1/chat/completions',
+      {
+        model: 'meta-llama/llama-4-scout-17b-16e-instruct',
+        messages: [
+          {
+            role: 'system',
+            content:
+              'You are a smart summarizer. Read the conversation and provide a concise updated summary.',
+          },
+          {
+            role: 'user',
+            content: prompt,
+          },
+        ],
+        temperature: 0.3,
+        max_tokens: 512,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${API_KEY}`,
+          'Content-Type': 'application/json',
+        },
+      }
+    );
+
+    return response.data.choices[0].message.content.trim();
+  } catch (error) {
+    console.error(error.response?.data || error.message);
+    throw new Error('Summary API failed');
+  }
+}
+
+module.exports = { askGroqWithContext, askGroqForSummary };
 
 // Example usage agar direct run karna hai:
 // if (require.main === module) {

@@ -1,29 +1,29 @@
-const { createWorker } = require("tesseract.js");
-const Image = require("../models/ImageSchema");
+const { createWorker } = require('tesseract.js');
+const Image = require('../models/ImageSchema');
 // const cloudinary = require("cloudinary").v2;
 
 async function processImage(imageId, userId) {
   try {
     const image = await Image.findById(imageId);
-    if (!image) throw new Error("Image not found");
+    if (!image) throw new Error('Image not found');
 
     // 1. Extract text from image
     const { text, confidence } = await extractTextFromImage(image.path);
-    console.log("Extracted text:", text, confidence);
+    console.log('Extracted text:', text, confidence);
 
     // 2. Generate basic labels from extracted text
     const dataFromApi = await generateLabelsWithGrok(text);
     const tags = dataFromApi.tags;
     const categories = dataFromApi.categories;
-    console.log("data from Api is:", dataFromApi);
-    console.log("Generated tags:", tags);
+    console.log('data from Api is:', dataFromApi);
+    console.log('Generated tags:', tags);
 
-    const combinedText = [...tags, ...categories].join(" ");
+    const combinedText = [...tags, ...categories].join(' ');
     console.log(combinedText);
     // 3. Create embeddings from the text
     // const textEmbedding = await generateTextEmbedding(text);
     const textEmbedding = await generateTextEmbedding(combinedText);
-    console.log("Generated text embedding", textEmbedding);
+    console.log('Generated text embedding', textEmbedding);
 
     // 4. Prepare text annotations
     const textAnnotations = [];
@@ -33,57 +33,57 @@ async function processImage(imageId, userId) {
         confidence: confidence || 0.8, // Use OCR confidence or default
       });
     }
-    console.log("Annotations", textAnnotations);
-    console.log("Tags", tags);
+    console.log('Annotations', textAnnotations);
+    console.log('Tags', tags);
     // 5. Update the image document
     const updateData = {
       textAnnotations,
       tags: tags.map((tag) => ({
         tag,
         confidence: 0.8,
-        source: "generated",
+        source: 'generated',
       })),
       categories,
       textEmbedding,
-      status: "processed",
+      status: 'processed',
       processedAt: new Date(),
       containsText: !!text,
     };
 
-    console.log("Updated Data", updateData);
+    console.log('Updated Data', updateData);
     await Image.findByIdAndUpdate(imageId, updateData);
     return true;
   } catch (error) {
-    console.error("Image processing failed:", error);
+    console.error('Image processing failed:', error);
     await Image.findByIdAndUpdate(imageId, {
-      status: "failed",
+      status: 'failed',
       processingError: error.message,
     });
     return false;
   }
 }
 
-const { exec } = require("child_process");
-const path = require("path");
+const { exec } = require('child_process');
+const path = require('path');
 
 async function pythonExtract(imagePath) {
   // Convert paths to POSIX format (works across Windows/Linux)
   const scriptPath = path
-    .join(__dirname, "utils", "ocr.py")
-    .replace(/\\/g, "/");
-  const normalizedImagePath = imagePath.replace(/\\/g, "/");
+    .join(__dirname, 'utils', 'ocr.py')
+    .replace(/\\/g, '/');
+  const normalizedImagePath = imagePath.replace(/\\/g, '/');
 
   return new Promise((resolve) => {
     exec(
       `python "${scriptPath}" "${normalizedImagePath}"`,
       (error, stdout, stderr) => {
         if (error) {
-          console.error("Execution Error:", {
+          console.error('Execution Error:', {
             error: error.message,
             cmd: error.cmd,
             path: process.env.PATH,
           });
-          resolve({ success: false, error: "OCR processing failed" });
+          resolve({ success: false, error: 'OCR processing failed' });
           return;
         }
 
@@ -91,10 +91,10 @@ async function pythonExtract(imagePath) {
           const result = JSON.parse(stdout);
           resolve(result);
         } catch (e) {
-          console.error("Parse Error:", { stdout, stderr });
+          console.error('Parse Error:', { stdout, stderr });
           resolve({
             success: false,
-            error: "Invalid OCR output",
+            error: 'Invalid OCR output',
             debug: { stdout, stderr },
           });
         }
@@ -111,15 +111,15 @@ async function extractTextFromImage(imagePath) {
       errorHandler: (err) => console.error(err),
     });
 
-    await worker.loadLanguage("eng");
-    await worker.initialize("eng");
+    await worker.loadLanguage('eng');
+    await worker.initialize('eng');
 
     // Configure for better text extraction
     await worker.setParameters({
-      tessedit_pageseg_mode: "6", // Assume a single uniform block of text
+      tessedit_pageseg_mode: '6', // Assume a single uniform block of text
       tessedit_char_whitelist:
-        "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789.,!?@#$%&*()-_=+[]{};:'\"\\|<>/ ", // Include space
-      preserve_interword_spaces: "1",
+        'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789.,!?@#$%&*()-_=+[]{};:\'"\\|<>/ ', // Include space
+      preserve_interword_spaces: '1',
     });
 
     const { data } = await worker.recognize(imagePath);
@@ -139,21 +139,21 @@ async function extractTextFromImage(imagePath) {
 function cleanExtractedText(rawText) {
   // Step 1: Remove unwanted characters and artifacts
   let cleaned = rawText
-    .replace(/[^\w\s.,!?@#$%&*()\-_=+[\]{};:'"\\|<>/]/g, " ") // Keep only allowed chars
-    .replace(/\s+/g, " ") // Collapse multiple spaces
+    .replace(/[^\w\s.,!?@#$%&*()\-_=+[\]{};:'"\\|<>/]/g, ' ') // Keep only allowed chars
+    .replace(/\s+/g, ' ') // Collapse multiple spaces
     .trim();
 
   // Step 2: Fix common OCR errors
   cleaned = cleaned
-    .replace(/\b(\w)\s+(\w)\b/g, "$1$2") // Fix split words (e.g., "hel lo" -> "hello")
-    .replace(/([a-z])\s+([A-Z])/g, "$1 $2") // Fix merged words
-    .replace(/(\d)\s+(\d)/g, "$1$2"); // Fix split numbers
+    .replace(/\b(\w)\s+(\w)\b/g, '$1$2') // Fix split words (e.g., "hel lo" -> "hello")
+    .replace(/([a-z])\s+([A-Z])/g, '$1 $2') // Fix merged words
+    .replace(/(\d)\s+(\d)/g, '$1$2'); // Fix split numbers
 
   // Step 3: Remove isolated single characters (likely OCR noise)
   cleaned = cleaned
-    .split(" ")
+    .split(' ')
     .filter((word) => word.length > 1 || /^[A-Za-z0-9]$/.test(word))
-    .join(" ");
+    .join(' ');
 
   return cleaned;
 }
@@ -166,12 +166,12 @@ async function generateLabelsWithGrok(text) {
     // Prepare the prompt for Grok API
     const messages = [
       {
-        role: "system",
+        role: 'system',
         content:
-          "You are a helpful assistant that generates tags and categories for text content.",
+          'You are a helpful assistant that generates tags and categories for text content.',
       },
       {
-        role: "user",
+        role: 'user',
         content: `Analyze the following text and generate appropriate tags and categories.
         Return ONLY a JSON object with "tags" and "categories" arrays.
         
@@ -186,17 +186,17 @@ async function generateLabelsWithGrok(text) {
 
     // Make API call to Groq API
     const response = await fetch(
-      "https://api.groq.com/openai/v1/chat/completions",
+      'https://api.groq.com/openai/v1/chat/completions',
       {
-        method: "POST",
+        method: 'POST',
         headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer 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`,
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${process.env.GROK_API_KEY}`,
         },
         body: JSON.stringify({
-          model: "meta-llama/llama-4-scout-17b-16e-instruct", // or "llama2-70b-4096"
+          model: 'meta-llama/llama-4-scout-17b-16e-instruct', // or "llama2-70b-4096"
           messages: messages,
-          response_format: { type: "json_object" },
+          response_format: { type: 'json_object' },
           temperature: 0.3,
           max_tokens: 200,
         }),
@@ -205,7 +205,7 @@ async function generateLabelsWithGrok(text) {
 
     if (!response.ok) {
       const errorData = await response.json();
-      console.error("Grok API error details:", errorData);
+      console.error('Grok API error details:', errorData);
       throw new Error(`Grok API error: ${response.status}`);
     }
 
@@ -213,7 +213,7 @@ async function generateLabelsWithGrok(text) {
     const content = data.choices[0]?.message?.content;
 
     if (!content) {
-      throw new Error("No content in Grok API response");
+      throw new Error('No content in Grok API response');
     }
 
     // Parse the JSON response
@@ -222,7 +222,7 @@ async function generateLabelsWithGrok(text) {
 
       // Validate the response structure
       if (!result.tags || !result.categories) {
-        throw new Error("Invalid response structure from Grok API");
+        throw new Error('Invalid response structure from Grok API');
       }
 
       return {
@@ -230,12 +230,12 @@ async function generateLabelsWithGrok(text) {
         categories: Array.isArray(result.categories) ? result.categories : [],
       };
     } catch (e) {
-      console.error("Failed to parse Grok response:", e);
-      console.error("Response content:", content);
+      console.error('Failed to parse Grok response:', e);
+      console.error('Response content:', content);
       return fallbackLabelGeneration(text);
     }
   } catch (error) {
-    console.error("Error calling Grok API:", error);
+    console.error('Error calling Grok API:', error);
     return fallbackLabelGeneration(text);
   }
 }
@@ -250,7 +250,7 @@ function fallbackLabelGeneration(text) {
     .split(/\W+/)
     .filter((word) => word.length > 3);
 
-  const stopWords = new Set(["the", "and", "that", "this", "with", "which"]);
+  const stopWords = new Set(['the', 'and', 'that', 'this', 'with', 'which']);
   const wordCounts = {};
 
   words.forEach((word) => {
@@ -265,11 +265,11 @@ function fallbackLabelGeneration(text) {
     .map(([word]) => word);
 
   const categories = [];
-  const techWords = ["ai", "machine", "learning", "model", "api"];
+  const techWords = ['ai', 'machine', 'learning', 'model', 'api'];
   if (tags.some((tag) => techWords.includes(tag))) {
-    categories.push("technology");
+    categories.push('technology');
   }
-  if (tags.length > 0) categories.push("general");
+  if (tags.length > 0) categories.push('general');
 
   return { tags, categories };
 }
@@ -282,20 +282,20 @@ async function generateTextEmbedding(text) {
   try {
     if (!text) return [];
 
-    const { pipeline } = await import("@xenova/transformers");
+    const { pipeline } = await import('@xenova/transformers');
     const extractor = await pipeline(
-      "feature-extraction",
-      "Xenova/all-MiniLM-L6-v2"
+      'feature-extraction',
+      'Xenova/all-MiniLM-L6-v2'
     );
 
     const output = await extractor(text, {
-      pooling: "mean",
+      pooling: 'mean',
       normalize: true,
     });
 
     return Array.from(output.data);
   } catch (error) {
-    console.error("Embedding generation error:", error);
+    console.error('Embedding generation error:', error);
     return [];
   }
 }
