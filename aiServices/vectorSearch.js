@@ -29,7 +29,7 @@ async function findRelevantChunks(queryEmbedding, limit = 5, adminId) {
       {
         $match: {
           user: adminId,
-          searchScore: { $gte: 0.68 }, // Optimized threshold balance
+          searchScore: { $gte: 0.4 } // Optimized threshold balance
         },
       },
       {
