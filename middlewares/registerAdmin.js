@@ -126,7 +126,7 @@ const registerAdmin = async (req, res) => {
       </div>
       <p>If you did not request this, please ignore this email.</p>
       <br />
-      <p>Best regards,<br/>Your Team</p>
+      <p>Best regards,<br/>Registration.OwnTrain</p>
     </div>
   `
     );
@@ -202,7 +202,7 @@ const verifyOTP = async (req, res) => {
 
     <p>Please keep this information secure and do not share it with anyone.</p>
     <br/>
-    <p>Best regards,<br/>Your Team</p>
+    <p>Best regards,<br/>Registration.OwnTrain</p>
   </div>
   `
     );
